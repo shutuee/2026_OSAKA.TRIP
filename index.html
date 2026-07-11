@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 OSAKA 大阪快樂遊 — 8/7-8/12 六天行程</title>
+    <meta name="description" content="2026 OSAKA 大阪快樂遊 六日自由行">
+    <meta property="og:title" content="2026 OSAKA 大阪快樂遊">
+    <meta property="og:description" content="8/7-8/12 六天行程">
+    <meta property="og:type" content="website">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style type="text/tailwindcss">
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f2f2f0; 
+            color: #5a5a57;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.6;
+        }
+
+        /* 北歐風莫蘭迪配色系統 (低飽和、溫暖、自然) */
+        .card-itinerary { background: linear-gradient(135deg, #9E5E52 0%, #B87B70 100%); } 
+        .card-dining { background: linear-gradient(135deg, #5F7362 0%, #7C9180 100%); }    
+        .card-transport { background: linear-gradient(135deg, #526E7A 0%, #6E8A96 100%); } 
+        .card-attractions { background: linear-gradient(135deg, #73627A 0%, #8F7C96 100%); }    
+        .card-souvenirs { background: linear-gradient(135deg, #A38B58 0%, #C2AA76 100%); }    
+        .card-budget-hotel { background: linear-gradient(135deg, #4E555C 0%, #6A727A 100%); }    
+
+        .icon-card {
+            aspect-ratio: 1 / 1;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .icon-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon-card i {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .page-content {
+            display: none;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .active-page { display: block; }
+
+        .morandi-shadow {
+            box-shadow: 0 10px 40px -15px rgba(0,0,0,0.06);
+        }
+
+        .vegan-badge {
+            background: #e9ede9;
+            color: #4a5a4a;
+            font-size: 0.85rem;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            border: 1px solid #d1d9d1;
+            white-space: nowrap;
+        }
+
+        .timeline-time {
+            @apply font-black text-slate-800 w-16 md:w-20 shrink-0 text-base md:text-lg;
+        }
+
+        /* 搭配行程安排的北歐暖磚紅 border */
+        .unified-border-l {
+            border-left: 4px solid #9E5E52;
+        }
+
+        /* 搭配行程安排的北歐暖磚紅 date-pill */
+        .date-pill {
+            background-color: #9E5E52;
+            color: white;
+            padding: 10px 32px;
+            border-radius: 9999px;
+            display: inline-block;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 12px -2px rgba(158, 94, 82, 0.3);
+        }
+
+        .maps-link:hover {
+            color: #9E5E52;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div class="max-w-4xl mx-auto px-6 py-12 md:py-16">
+        
+        <!-- 首頁 Dashboard -->
+        <div id="home-page" class="active-page">
+            <header class="mb-12 md:mb-16 text-center">
+                <h1 class="text-3xl md:text-4xl font-black tracking-[0.15em] mb-3 leading-tight uppercase">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#3d4d5a] to-[#7d4d4d]">2026 OSAKA</span><br>
+                    <span class="text-xl md:text-2xl font-bold tracking-[0.3em] text-[#b0985a]">8/7 - 8/12</span><br>
+                    <span class="mt-2 block text-[#5a5a57]">大阪快樂遊</span>
+                </h1>
+                <div class="h-1 w-16 bg-gradient-to-r from-[#3d4d5a] via-[#7d4d4d] to-[#b0985a] mx-auto mt-6 md:mt-8 rounded-full opacity-80"></div>
+            </header>
+
+            <!-- 六大按鈕區 -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                <div onclick="navigateTo('itinerary')" class="icon-card card-itinerary rounded-[2.5rem] flex flex-col items-center justify-center">
+                    <i data-lucide="calendar-days" class="w-12 h-12 md:w-14 md:h-14 text-white/90 mb-4 md:mb-5"></i>
+                    <span class="font-bold text-white tracking-[0.1em] text-base md:text-lg">行程安排</span>
+                </div>
+                <div onclick="navigateTo('dining')" class="icon-card card-dining rounded-[2.5rem] flex flex-col items-center justify-center">
+                    <i data-lucide="utensils" class="w-12 h-12 md:w-14 md:h-14 text-white/90 mb-4 md:mb-5"></i>
+                    <span class="font-bold text-white tracking-[0.1em] text-base md:text-lg">特選餐廳</span>
+                </div>
+                <div onclick="navigateTo('transport')" class="icon-card card-transport rounded-[2.5rem] flex flex-col items-center justify-center">
+                    <i data-lucide="train" class="w-12 h-12 md:w-14 md:h-14 text-white/90 mb-4 md:mb-5"></i>
+                    <span class="font-bold text-white tracking-[0.1em] text-base md:text-lg">市區交通指南</span>
+                </div>
+                <div onclick="navigateTo('attractions')" class="icon-card card-attractions rounded-[2.5rem] flex flex-col items-center justify-center">
+                    <i data-lucide="sparkles" class="w-12 h-12 md:w-14 md:h-14 text-white/90 mb-4 md:mb-5"></i>
+                    <span class="font-bold text-white tracking-[0.1em] text-base md:text-lg">各景點攻略</span>
+                </div>
+                <div onclick="navigateTo('souvenirs')" class="icon-card card-souvenirs rounded-[2.5rem] flex flex-col items-center justify-center">
+                    <i data-lucide="cup-soda" class="w-12 h-12 md:w-14 md:h-14 text-white/90 mb-4 md:mb-5"></i>
+                    <span class="font-bold text-white tracking-[0.1em] text-base md:text-lg">飲品與伴手禮推薦</span>
+                </div>
+                <div onclick="navigateTo('budget-hotel')" class="icon-card card-budget-hotel rounded-[2.5rem] flex flex-col items-center justify-center">
+                    <i data-lucide="wallet" class="w-12 h-12 md:w-14 md:h-14 text-white/90 mb-4 md:mb-5"></i>
+                    <span class="font-bold text-white tracking-[0.1em] text-base md:text-lg">住宿及費用</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 內容容器 -->
+        <div id="content-container">
+            <button id="back-btn" onclick="goHome()" class="hidden mb-10 flex items-center font-bold text-[#5a5a57] bg-white px-5 py-2.5 rounded-full shadow-sm border border-[#e2e2e0] hover:bg-[#f8f8f6] hover:shadow-md transition-all tracking-widest text-xs md:text-sm active:scale-95 w-fit">
+                <i data-lucide="arrow-left" class="w-4 h-4 md:w-5 md:h-5 mr-2 text-[#a5a5a2]"></i> BACK TO HOME
+            </button>
+
+            <!-- ================= 一、行程安排 ================= -->
+            <div id="itinerary-page" class="page-content space-y-8">
+                <div class="border-b border-[#e2e2e0] pb-4">
+                    <h2 class="text-2xl md:text-3xl font-black tracking-[0.1em] text-[#5a5a57]">行程安排</h2>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Day 1 -->
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow unified-border-l">
+                        <div class="mb-8">
+                            <span class="date-pill">8/7 (五) 第一天</span>
+                        </div>
+                        <div class="space-y-6 text-base md:text-lg">
+                            <div class="flex gap-4 md:gap-6">
+                                <span class="timeline-time text-rose-500">08:30</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="text-rose-600 font-bold">高雄出發 (亞航 AK170)</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Kaohsiung+International+Airport" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time text-rose-500">12:40</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="text-rose-600 font-bold">抵達關西機場</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Kansai+International+Airport" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time">14:30</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">搭乘 INN接駁 (約60-75分鐘)</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time">16:00</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">ES3 ELLE Check-in</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=ES3+ELLE+Shinsaibashi" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time text-emerald-600">17:30</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <div>
+                                        <p class="font-bold text-emerald-700">🌱晚餐 Halal Ramen </p>
+                                    </div>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Halal+Ramen+Naniwaya" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time">19:00</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">心齋橋逛街</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Shinsaibashi" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 2 -->
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow unified-border-l">
+                        <div class="mb-8">
+                            <span class="date-pill">8/8 (六) 第二天</span>
+                        </div>
+                        <div class="space-y-6 text-base md:text-lg">
+                            <div class="flex gap-4 md:gap-6">
+                                <span class="timeline-time">09:00</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">出發 (➝ UBER)</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time">09:30</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <div>
+                                        <p class="font-medium text-slate-700">天王寺動物園 (➝ 走路)</p>
+                                        <p class="text-sm text-slate-400 mt-1"></p>
+                                    </div>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Tennoji+Zoo" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time text-emerald-600">12:00</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <div>
+                                        <p class="font-bold text-emerald-700">🌱 午餐台灣夜市 (➝ 走路)</p>
+                                    </div>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=TW+NIGHT+MARKET+Osaka" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time">13:30</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">阿倍野觀景台 (➝ 走路)</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Abeno+Harukas+300+Observatory" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time">15:00</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">獅子殿 (➝ UBER)</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Namba+Yasaka+Shrine" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航（難波八阪神社 獅子殿）">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time">17:00</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">通天閣 OR 四天王寺 (➝ UBER)</span>
+                                    <div class="flex gap-4">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Tsutenkaku" target="_blank" class="maps-link mt-0.5" title="通天閣 導航">
+                                            <span class="text-xs text-slate-400 underline font-medium">通天閣</span>
+                                            <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 inline"></i>
+                                        </a>
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Shitennoji+Temple" target="_blank" class="maps-link mt-0.5" title="四天王寺 導航">
+                                            <span class="text-xs text-slate-400 underline font-medium">四天王寺</span>
+                                            <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 inline"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time text-emerald-600">18:00</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <div>
+                                        <p class="font-bold text-emerald-700">🌱 晚餐 OKO takoyaki vegan</p>
+                                    </div>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=OKO+vegan+takoyaki" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 3 -->
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow unified-border-l">
+                        <div class="mb-8">
+                            <span class="date-pill">8/9 (日) 第三天</span>
+                        </div>
+                        <div class="space-y-6 text-base md:text-lg">
+                            <div class="flex gap-4 md:gap-6">
+                                <span class="timeline-time">09:30</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">海遊館 (地鐵-大阪港站) </span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Osaka+Aquarium+Kaiyukan" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time">15:30</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">天保山海港村購物中心</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Tempozan+Marketplace" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6 text-emerald-600">
+                                <span class="timeline-time">18:00</span>
+                                <span class="font-bold">晚餐</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 4 -->
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow unified-border-l">
+                        <div class="mb-8">
+                            <span class="date-pill">8/10 (一) 第四天</span>
+                        </div>
+                        <div class="space-y-6 text-base md:text-lg">
+                            <div class="flex gap-4 md:gap-6">
+                                <span class="timeline-time">整天</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-bold text-slate-700">京都一日遊</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Kyoto" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time text-emerald-600">午餐</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <div>
+                                        <p class="font-bold text-emerald-700">🌱Mumokuteki</p>
+                                    </div>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=mumokuteki+cafe+and+foods+Kyoto" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time text-emerald-600">晚餐</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <div>
+                                        <p class="font-bold text-emerald-700">🌱Pivot BASE Cafe & Bar</p>
+                                    </div>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Pivot+BASE+Cafe+and+Bar+Osaka" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 5 -->
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow unified-border-l">
+                        <div class="mb-8">
+                            <span class="date-pill">8/11 (二) 第五天</span>
+                        </div>
+                        <div class="space-y-6 text-base md:text-lg">
+                            <div class="flex gap-4 md:gap-6">
+                                <span class="timeline-time">09:00</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">大阪兒童樂園 (地鐵-扇町站2號出口)</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Kids+Plaza+Osaka" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time text-emerald-600">11:30</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <div>
+                                        <p class="font-bold text-emerald-700">🌱午餐素食串燒 あじゅ</p>
+                                    </div>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=串かつ+あじゅ" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time">15:30</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">扇町公園</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Ogimachi+Park" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time">17:30</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">天神橋筋商店街</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Tenjinbashisuji+Shopping+Street" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6 text-emerald-600">
+                                <span class="timeline-time">晚餐</span>
+                                <span class="font-bold">晚餐 DIY</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 6 -->
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow unified-border-l">
+                        <div class="mb-8">
+                            <span class="date-pill">8/12 (三) 第六天</span>
+                        </div>
+                        <div class="space-y-6 text-base md:text-lg">
+                            <div class="flex gap-4 md:gap-6">
+                                <span class="timeline-time">10:00</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-medium text-slate-700">退房</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6">
+                                <span class="timeline-time text-rose-500">13:45</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span class="font-bold text-rose-600">回程</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Kansai+International+Airport" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 md:gap-6 border-t border-[#f2f2f0] pt-6 text-rose-600 font-bold">
+                                <span class="timeline-time">16:00</span>
+                                <div class="flex-1 flex justify-between items-start">
+                                    <span>抵達</span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Kaohsiung+International+Airport" target="_blank" class="maps-link mt-0.5" title="Google Maps 導航">
+                                        <i data-lucide="map-pin" class="w-6 h-6 text-slate-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= 二、特選餐廳 ================= -->
+            <div id="dining-page" class="page-content space-y-8">
+                <div class="border-b border-[#e2e2e0] pb-4">
+                    <h2 class="text-2xl md:text-3xl font-black tracking-widest text-[#5a5a57]">特選餐廳</h2>
+                    <p class="text-sm text-slate-400 mt-2 font-medium">本行程特別考量素食與特色飲品需求，精心安排以下餐廳：</p>
+                </div>
+                <div class="grid gap-6">
+                    <!-- Restaurant 1 -->
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow flex flex-col border-l-4 border-emerald-300">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-sm rounded-md font-bold">大阪</span>
+                                    <p class="font-bold text-emerald-800 text-xl md:text-2xl">Halal Ramen Naniwaya</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="vegan-badge">🌱 去五辛</span>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Halal+Ramen+Naniwaya" target="_blank" class="maps-link ml-3 shrink-0">
+                                    <i data-lucide="map-pin" class="w-7 h-7 text-emerald-600/70"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Restaurant 2 -->
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow flex flex-col border-l-4 border-emerald-300">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-sm rounded-md font-bold">大阪</span>
+                                    <p class="font-bold text-emerald-800 text-xl md:text-2xl">台灣夜市 TW NIGHT MARKET</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="vegan-badge">🌱 純素</span>
+                                <a href="https://www.google.com/maps/search/?api=1&query=TW+NIGHT+MARKET+Osaka" target="_blank" class="maps-link ml-3 shrink-0">
+                                    <i data-lucide="map-pin" class="w-7 h-7 text-emerald-600/70"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Restaurant 3 -->
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow flex flex-col border-l-4 border-emerald-300">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-sm rounded-md font-bold">大阪</span>
+                                    <p class="font-bold text-emerald-800 text-xl md:text-2xl">OKO takoyaki vegan</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="vegan-badge">🌱 純素</span>
+                                <a href="https://www.google.com/maps/search/?api=1&query=OKO+vegan+takoyaki" target="_blank" class="maps-link ml-3 shrink-0">
+                                    <i data-lucide="map-pin" class="w-7 h-7 text-emerald-600/70"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Restaurant 4 -->
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow flex flex-col border-l-4 border-emerald-300">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-sm rounded-md font-bold">大阪</span>
+                                    <p class="font-bold text-emerald-800 text-xl md:text-2xl">Pivot BASE Cafe & Bar</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="vegan-badge">🌱 去五辛</span>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Pivot+BASE+Cafe+and+Bar+Osaka" target="_blank" class="maps-link ml-3 shrink-0">
+                                    <i data-lucide="map-pin" class="w-7 h-7 text-emerald-600/70"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Restaurant 5 -->
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow flex flex-col border-l-4 border-emerald-300">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-sm rounded-md font-bold">京都</span>
+                                    <p class="font-bold text-emerald-800 text-xl md:text-2xl">mumokuteki cafe&foods Kyoto</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="vegan-badge">🌱 純素</span>
+                                <a href="https://www.google.com/maps/search/?api=1&query=mumokuteki+cafe+and+foods+Kyoto" target="_blank" class="maps-link ml-3 shrink-0">
+                                    <i data-lucide="map-pin" class="w-7 h-7 text-emerald-600/70"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Restaurant 6 -->
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow flex flex-col border-l-4 border-emerald-300">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-sm rounded-md font-bold">關空</span>
+                                    <p class="font-bold text-emerald-800 text-xl md:text-2xl">Onigiri Burger Kansai Airport T1F2</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <a href="https://www.google.com/maps/search/?api=1&query=Onigiri+Burger+Kansai+Airport" target="_blank" class="maps-link ml-3 shrink-0">
+                                    <i data-lucide="map-pin" class="w-7 h-7 text-emerald-600/70"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= 三、市區交通指南 ================= -->
+            <div id="transport-page" class="page-content space-y-6">
+                <div class="border-b border-[#e2e2e0] pb-4">
+                    <h2 class="text-xl font-black tracking-widest text-[#5a5a57]">市區交通指南</h2>
+                </div>
+                <div class="grid gap-4">
+                    <a href="https://subway.osakametro.co.jp/tw/guide/routemap.php?fr=ev39932T0201M08" target="_blank" class="bg-white p-6 rounded-[1.2rem] morandi-shadow flex justify-between items-center border-l-4 border-[#3d4d5a] hover:bg-slate-50 transition-colors">
+                        <div class="flex items-center">
+                            <i data-lucide="map" class="w-6 h-6 mr-4 text-[#3d4d5a]"></i>
+                            <div>
+                                <p class="font-bold text-[#3d4d5a] text-base">大阪地鐵路線圖</p>
+                                <p class="text-xs text-slate-400 mt-1 font-medium">Osaka Metro Map<br>(Official Site)</p>
+                            </div>
+                        </div>
+                        <i data-lucide="external-link" class="w-5 h-5 text-slate-300"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ================= 四、各景點攻略 ================= -->
+            <div id="attractions-page" class="page-content space-y-6">
+                <div class="border-b border-[#e2e2e0] pb-4">
+                    <h2 class="text-xl font-black tracking-widest text-[#5a5a57]">各景點攻略</h2>
+                </div>
+                
+                <div class="grid gap-4">
+                    <!-- Guide 1 -->
+                    <a href="https://osaka.letsgojp.com/" target="_blank" class="bg-white p-6 rounded-[1.2rem] morandi-shadow flex justify-between items-center border-l-4 border-[#4d3d5a] hover:bg-slate-50 transition-colors">
+                        <div class="flex items-center">
+                            <i data-lucide="sparkles" class="w-6 h-6 mr-4 text-[#4d3d5a]"></i>
+                            <div>
+                                <p class="font-bold text-slate-700 text-base">樂購吃!日本關西</p>
+                                <p class="text-xs text-slate-400 mt-1 font-medium">關西旅遊綜合指南攻略</p>
+                            </div>
+                        </div>
+                        <i data-lucide="external-link" class="w-5 h-5 text-slate-300"></i>
+                    </a>
+
+                    <!-- Guide 2 -->
+                    <a href="https://osaka.letsgojp.com/archives/760272/" target="_blank" class="bg-white p-6 rounded-[1.2rem] morandi-shadow flex justify-between items-center border-l-4 border-[#4d3d5a] hover:bg-slate-50 transition-colors">
+                        <div class="flex items-center">
+                            <i data-lucide="book-open" class="w-6 h-6 mr-4 text-[#4d3d5a]"></i>
+                            <div>
+                                <p class="font-bold text-slate-700 text-base">四天王寺</p>
+                                <p class="text-xs text-slate-400 mt-1 font-medium">樂購吃!介紹專文</p>
+                            </div>
+                        </div>
+                        <i data-lucide="external-link" class="w-5 h-5 text-slate-300"></i>
+                    </a>
+
+                    <!-- Zoo Guide 1 -->
+                    <a href="https://osaka.letsgojp.com/archives/877246/" target="_blank" class="bg-white p-6 rounded-[1.2rem] morandi-shadow flex justify-between items-center border-l-4 border-[#4d3d5a] hover:bg-slate-50 transition-colors">
+                        <div class="flex items-center">
+                            <i data-lucide="heart" class="w-6 h-6 mr-4 text-[#4d3d5a]"></i>
+                            <div>
+                                <p class="font-bold text-slate-700 text-base">動物園 1</p>
+                                <p class="text-xs text-slate-400 mt-1 font-medium">樂購吃!介紹專文</p>
+                            </div>
+                        </div>
+                        <i data-lucide="external-link" class="w-5 h-5 text-slate-300"></i>
+                    </a>
+
+                    <!-- Zoo Guide 2 -->
+                    <a href="https://bobbytravel.tw/tennoji-zoo/" target="_blank" class="bg-white p-6 rounded-[1.2rem] morandi-shadow flex justify-between items-center border-l-4 border-[#4d3d5a] hover:bg-slate-50 transition-colors">
+                        <div class="flex items-center">
+                            <i data-lucide="smile" class="w-6 h-6 mr-4 text-[#4d3d5a]"></i>
+                            <div>
+                                <p class="font-bold text-slate-700 text-base">動物園 2</p>
+                                <p class="text-xs text-slate-400 mt-1 font-medium">波比看世界推薦玩法</p>
+                            </div>
+                        </div>
+                        <i data-lucide="external-link" class="w-5 h-5 text-slate-300"></i>
+                    </a>
+
+                    <!-- Kyoto Guide -->
+                    <a href="https://mimigo.tw/kiyomizu-temple/" target="_blank" class="bg-white p-6 rounded-[1.2rem] morandi-shadow flex justify-between items-center border-l-4 border-[#4d3d5a] hover:bg-slate-50 transition-colors">
+                        <div class="flex items-center">
+                            <i data-lucide="compass" class="w-6 h-6 mr-4 text-[#4d3d5a]"></i>
+                            <div>
+                                <p class="font-bold text-slate-700 text-base">京都</p>
+                                <p class="text-xs text-slate-400 mt-1 font-medium">清水寺指南</p>
+                            </div>
+                        </div>
+                        <i data-lucide="external-link" class="w-5 h-5 text-slate-300"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ================= 五、飲品與伴手禮推薦 ================= -->
+            <div id="souvenirs-page" class="page-content space-y-8">
+                <div class="border-b border-[#e2e2e0] pb-4">
+                    <h2 class="text-2xl md:text-3xl font-black tracking-widest text-[#5a5a57]">飲品與伴手禮推薦</h2>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow border-l-4 border-[#b0985a]">
+                        <h3 class="font-bold text-[#b0985a] text-xl md:text-2xl mb-6 flex items-center">
+                            <i data-lucide="gift" class="w-6 h-6 mr-3"></i> 大阪伴手禮
+                        </h3>
+                        <ul class="space-y-5 text-base md:text-lg text-slate-600 font-medium">
+                            <li>
+                                <a href="https://reurl.cc/274xAm" target="_blank" class="flex items-center justify-between hover:text-[#b0985a] transition-colors pb-3 border-b border-slate-100">
+                                    <span>精選指南一 🔗</span>
+                                    <i data-lucide="external-link" class="w-5 h-5 text-slate-300"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://bobbytravel.tw/osaka-souvenirs/" target="_blank" class="flex items-center justify-between hover:text-[#b0985a] transition-colors pb-3 border-b border-slate-100">
+                                    <span>精選指南二 🔗</span>
+                                    <i data-lucide="external-link" class="w-5 h-5 text-slate-300"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://mimigo.tw/osaka-buy/" target="_blank" class="flex items-center justify-between hover:text-[#b0985a] transition-colors">
+                                    <span>精選指南三 🔗</span>
+                                    <i data-lucide="external-link" class="w-5 h-5 text-slate-300"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= 六、住宿及費用 ================= -->
+            <div id="budget-hotel-page" class="page-content space-y-8">
+                <div class="border-b border-[#e2e2e0] pb-4">
+                    <h2 class="text-2xl md:text-3xl font-black tracking-widest text-[#5a5a57]">住宿及費用</h2>
+                </div>
+                
+                <!-- 住宿資訊區塊 -->
+                <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow border-l-4 border-[#3d3d3d]">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-black text-[#5a5a57] text-xl md:text-2xl tracking-wide">住宿安排</h4>
+                        <a href="https://www.google.com/maps/search/?api=1&query=ES3+ELLE+Shinsaibashi" target="_blank" class="maps-link ml-4 shrink-0">
+                            <i data-lucide="map-pin" class="w-8 h-8 text-[#5a6d7a]"></i>
+                        </a>
+                    </div>
+                    <p class="text-base md:text-lg text-slate-500 leading-loose font-medium">
+                        🏨 <strong>ES3 ELLE Shinsaibashi</strong>
+                    </p>
+                </div>
+
+                <!-- 預算圖表與明細區塊 -->
+                <div class="bg-white p-6 md:p-10 rounded-[2rem] morandi-shadow text-center">
+                    <h4 class="font-bold text-[#5a5a57] text-lg mb-6 tracking-wide text-left border-b border-slate-100 pb-3">費用預估</h4>
+                    <div class="relative inline-block mb-10">
+                        <svg id="budget-chart" width="260" height="260"></svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-xs font-bold text-[#a5a5a2] tracking-widest uppercase">基本估算</span>
+                            <span class="text-xl font-black text-[#5a5a57] mt-1">NT$ 15,850+</span>
+                            <span class="text-[10px] text-slate-400 mt-1">(不含日圓門票)</span>
+                        </div>
+                    </div>
+                    <div id="budget-legend" class="text-left space-y-4 max-w-sm mx-auto px-2"></div>
+                </div>
+
+                <!-- 門票及零星費用區塊 -->
+                <div class="bg-white p-6 md:p-8 rounded-[1.5rem] morandi-shadow border-l-4 border-[#5a5a5a]">
+                    <h4 class="font-black text-[#5a5a57] text-lg mb-4 tracking-wide">門票</h4>
+                    <ul class="space-y-3 text-base text-slate-600 font-medium">
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span>動物園</span>
+                            <span class="text-slate-800 font-bold">500/200日</span>
+                        </li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span>天王寺中心伽藍（含五重塔）</span>
+                            <span class="text-slate-800 font-bold">300 /200 日</span>
+                        </li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span>阿倍野觀景台+12G網路(KKDAY)</span>
+                            <span class="text-[#3d4d5a] font-bold">397台</span>
+                        </li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2">
+                            <span>海遊館</span>
+                            <span class="text-[#3d4d5a] font-bold">552/276/138台</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>大阪兒童樂園</span>
+                            <span class="text-[#3d4d5a] font-bold">291 /155/97 台</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // 初始化 Lucide 圖標
+        lucide.createIcons();
+
+        // 導覽功能
+        function navigateTo(pageId) {
+            document.getElementById('home-page').classList.remove('active-page');
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('back-btn').classList.remove('hidden');
+            
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active-page'));
+            
+            const targetPage = document.getElementById(pageId + '-page');
+            if (targetPage) targetPage.classList.add('active-page');
+            
+            if (pageId === 'budget-hotel') {
+                setTimeout(renderBudgetChart, 50);
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 回到首頁
+        function goHome() {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active-page'));
+            document.getElementById('back-btn').classList.add('hidden');
+            document.getElementById('home-page').classList.remove('hidden');
+            document.getElementById('home-page').classList.add('active-page');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 預算圖表渲染 (D3.js)
+        function renderBudgetChart() {
+            // 基本台幣開銷數據
+            const data = [
+                { label: "機票費用：高雄－關西 亞航來回", value: 10400, displayValue: "10400/人", color: "#FF6B6B" },
+                { label: "住宿費用：五晚", value: 5000, displayValue: "25000台幣", color: "#4ECDC4" },
+                { label: "網卡吃到飽ESIM", value: 450, displayValue: "450元", color: "#FFD166" }
+            ];
+            
+            const size = 260, innerRadius = 105, radius = size / 2;
+            const svg = d3.select("#budget-chart");
+            svg.selectAll("*").remove();
+            
+            const g = svg.append("g").attr("transform", `translate(${size/2},${size/2})`);
+            const pie = d3.pie().sort(null).value(d => d.value);
+            const arc = d3.arc().innerRadius(innerRadius).outerRadius(radius).cornerRadius(12).padAngle(0.06);
+            
+            g.selectAll("path")
+                .data(pie(data))
+                .enter()
+                .append("path")
+                .attr("d", arc)
+                .attr("fill", d => d.data.color)
+                .style("opacity", 0)
+                .transition()
+                .duration(1000)
+                .style("opacity", 1);
+
+            const legend = d3.select("#budget-legend");
+            legend.selectAll("*").remove();
+            data.forEach(d => {
+                const row = legend.append("div").attr("class", "flex justify-between items-center pb-3 border-b border-[#f2f2f0]");
+                const left = row.append("div").attr("class", "flex items-center space-x-3");
+                left.append("div").attr("class", "w-4 h-4 rounded-full shrink-0").style("background-color", d.color);
+                left.append("span").attr("class", "text-sm md:text-base font-bold text-slate-600").text(d.label);
+                row.append("span").attr("class", "text-sm md:text-base font-black text-slate-800 shrink-0").text(d.displayValue);
+            });
+        }
+    </script>
+</body>
+</html>
