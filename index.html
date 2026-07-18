@@ -8,10 +8,10 @@
     <meta property="og:title" content="2026 OSAKA 大阪快樂遊">
     <meta property="og:description" content="8/7-8/12 動態隨身手冊">
     <meta property="og:type" content="website">
-    
+
     <meta property="og:image"
         content="https://shutuee.github.io/2026_OSAKA.TRIP/IMG_2235.png">
-
+    
     <!-- 載入 Google 字型與外部套件 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -24,7 +24,7 @@
                 extend: {
                     colors: {
                         morandi: {
-                            terracotta: '#9E5E52', // 暖磚紅
+                            terracotta: '#9E5E52', // 暖磚紅 (深色莫蘭迪紅)
                             terracottaLight: '#B87B70',
                             sage: '#5F7362',       // 鼠尾草綠
                             sageLight: '#7C9180',
@@ -178,6 +178,15 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #A8A8A4;
         }
+
+        /* 隱藏橫向滾動條 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
     </style>
 </head>
 <body class="min-h-screen pb-24 md:pb-12 font-sans selection:bg-morandi-terracotta/20 selection:text-morandi-dark">
@@ -185,48 +194,49 @@
     <div class="max-w-4xl mx-auto px-4 md:px-6 py-6 md:py-10">
         
         <!-- 頂部倒計時與快速看板 -->
-        <div id="top-countdown-widget" class="mb-6 bg-[#F4EAD4] rounded-[2rem] p-5 sm:p-6 morandi-shadow flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3 w-full md:w-auto">
+        <div id="top-countdown-widget" class="mb-6 bg-[#F4EAD4] rounded-[2rem] p-5 sm:p-6 morandi-shadow flex flex-col justify-between items-center gap-4 text-center">
+            <div class="flex flex-col items-center gap-3 w-full text-center">
                 <div class="w-16 h-16 rounded-2xl bg-white/40 flex items-center justify-center text-[#5a5a57] shrink-0">
                     <i data-lucide="plane-takeoff" class="w-10 h-10"></i>
                 </div>
-                <div class="text-left text-[#5a5a57]">
-                    <h3 class="text-lg font-bold tracking-widest uppercase">旅行倒數中</h3>
-                    <p class="text-[14px] opacity-70 tracking-wider">2026/08/07 高雄起飛</p>
+                <div class="text-center text-[#5a5a57]">
+                    <h3 class="text-xl font-bold tracking-widest uppercase">旅行倒數中</h3>
+                    <p class="text-[14px] opacity-70 tracking-wider mt-1">2026/08/07 高雄起飛</p>
                 </div>
             </div>
             
             <!-- 倒數計時容器 -->
-            <div id="countdown-timer" class="flex items-center justify-center gap-2 font-mono text-[#5a5a57] w-full md:w-auto">
-                <div class="flex flex-col items-center min-w-[50px] bg-white/40 p-2 rounded-lg">
-                    <span id="cd-days" class="text-xl md:text-2xl font-bold">--</span>
-                    <span class="text-[9px] opacity-70 mt-0.5 tracking-wider">DAYS</span>
+            <div id="countdown-timer" class="flex items-center justify-center gap-2 font-mono text-[#5a5a57] w-full">
+                <div class="flex flex-col items-center min-w-[55px] md:min-w-[70px] bg-white/40 p-2.5 rounded-2xl">
+                    <span id="cd-days" class="text-2xl md:text-3xl font-bold">--</span>
+                    <span class="text-[9px] opacity-75 mt-1 tracking-wider font-sans">DAYS</span>
                 </div>
-                <div class="opacity-40 text-lg font-thin -mt-2">:</div>
-                <div class="flex flex-col items-center min-w-[50px] bg-white/40 p-2 rounded-lg">
-                    <span id="cd-hours" class="text-xl md:text-2xl font-bold">--</span>
-                    <span class="text-[9px] opacity-70 mt-0.5 tracking-wider">HRS</span>
+                <div class="opacity-40 text-xl font-thin -mt-2">:</div>
+                <div class="flex flex-col items-center min-w-[55px] md:min-w-[70px] bg-white/40 p-2.5 rounded-2xl">
+                    <span id="cd-hours" class="text-2xl md:text-3xl font-bold">--</span>
+                    <span class="text-[9px] opacity-75 mt-1 tracking-wider font-sans">HRS</span>
                 </div>
-                <div class="opacity-40 text-lg font-thin -mt-2">:</div>
-                <div class="flex flex-col items-center min-w-[50px] bg-white/40 p-2 rounded-lg">
-                    <span id="cd-mins" class="text-xl md:text-2xl font-bold">--</span>
-                    <span class="text-[9px] opacity-70 mt-0.5 tracking-wider">MINS</span>
+                <div class="opacity-40 text-xl font-thin -mt-2">:</div>
+                <div class="flex flex-col items-center min-w-[55px] md:min-w-[70px] bg-white/40 p-2.5 rounded-2xl">
+                    <span id="cd-mins" class="text-2xl md:text-3xl font-bold">--</span>
+                    <span class="text-[9px] opacity-75 mt-1 tracking-wider font-sans">MINS</span>
                 </div>
-                <div class="opacity-40 text-lg font-thin -mt-2">:</div>
-                <div class="flex flex-col items-center min-w-[50px] bg-white/40 p-2 rounded-lg">
-                    <span id="cd-secs" class="text-xl md:text-2xl font-bold opacity-80">--</span>
-                    <span class="text-[9px] opacity-70 mt-0.5 tracking-wider">SECS</span>
+                <div class="opacity-40 text-xl font-thin -mt-2">:</div>
+                <div class="flex flex-col items-center min-w-[55px] md:min-w-[70px] bg-white/40 p-2.5 rounded-2xl">
+                    <span id="cd-secs" class="text-2xl md:text-3xl font-bold opacity-80">--</span>
+                    <span class="text-[9px] opacity-75 mt-1 tracking-wider font-sans">SECS</span>
                 </div>
             </div>
         </div>
 
         <!-- 首頁 Dashboard -->
         <div id="home-page" class="active-page">
+            <!-- 頂部大阪標題 (手機版完全置中) -->
             <header class="mb-8 md:mb-12 text-center">
-                <h1 class="tracking-[0.18em] mb-3 leading-tight uppercase select-none">
-                    <span class="text-3xl md:text-4xl bg-clip-text text-transparent bg-gradient-to-r from-[#3d4d5a] via-[#8c5a5a] to-[#a38b58] font-black">2026 OSAKA</span><br>
-                    <span class="text-xl md:text-2xl tracking-[0.25em] text-morandi-gold font-extrabold">8/7 - 8/12</span><br>
-                    <span class="mt-3 block text-2xl md:text-3xl tracking-[0.15em] bg-clip-text text-transparent bg-gradient-to-r from-morandi-terracotta via-morandi-slate to-morandi-gold font-black">大阪快樂遊</span>
+                <h1 class="tracking-[0.18em] mb-3 leading-tight uppercase select-none text-center">
+                    <span class="text-3xl md:text-4xl bg-clip-text text-transparent bg-gradient-to-r from-[#3d4d5a] via-[#8c5a5a] to-[#a38b58] font-black block text-center">2026 OSAKA</span>
+                    <span class="text-xl md:text-2xl tracking-[0.25em] text-morandi-gold font-extrabold block text-center mt-1">8/7 - 8/12</span>
+                    <span class="mt-3 block text-2xl md:text-3xl tracking-[0.15em] bg-clip-text text-transparent bg-gradient-to-r from-morandi-terracotta via-morandi-slate to-morandi-gold font-black text-center">大阪快樂遊</span>
                 </h1>
                 <div class="h-1 w-16 bg-gradient-to-r from-morandi-terracotta via-morandi-slate to-morandi-gold mx-auto mt-4 rounded-full opacity-60"></div>
             </header>
@@ -301,13 +311,23 @@
 
             <!-- ================= 一、行程安排 ================= -->
             <div id="itinerary-page" class="page-content space-y-6">
-                <div class="border-b border-[#e2e2e0] pb-3">
-                    <h2 class="text-xl md:text-2xl font-black tracking-[0.1em] text-[#5a5a57]">行程安排</h2>
+                <!-- 行程安排頂端導航條：同列右側加入 D1-D6 快捷切換 -->
+                <div class="border-b border-[#e2e2e0] pb-3 flex items-center justify-between gap-2">
+                    <h2 class="text-xl md:text-2xl font-black tracking-[0.1em] text-[#5a5a57] shrink-0">行程安排</h2>
+                    <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1">
+                        <button onclick="filterItineraryDay('all')" id="btn-itinerary-all" class="itinerary-day-tab px-2 md:px-3 py-1 text-xs md:text-sm rounded-lg bg-morandi-terracotta text-white font-bold border border-transparent transition-all shrink-0">ALL</button>
+                        <button onclick="filterItineraryDay(1)" id="btn-itinerary-1" class="itinerary-day-tab px-2 md:px-3 py-1 text-xs md:text-sm rounded-lg bg-white text-slate-500 font-bold border border-slate-200 hover:bg-slate-50 transition-all shrink-0">D1</button>
+                        <button onclick="filterItineraryDay(2)" id="btn-itinerary-2" class="itinerary-day-tab px-2 md:px-3 py-1 text-xs md:text-sm rounded-lg bg-white text-slate-500 font-bold border border-slate-200 hover:bg-slate-50 transition-all shrink-0">D2</button>
+                        <button onclick="filterItineraryDay(3)" id="btn-itinerary-3" class="itinerary-day-tab px-2 md:px-3 py-1 text-xs md:text-sm rounded-lg bg-white text-slate-500 font-bold border border-slate-200 hover:bg-slate-50 transition-all shrink-0">D3</button>
+                        <button onclick="filterItineraryDay(4)" id="btn-itinerary-4" class="itinerary-day-tab px-2 md:px-3 py-1 text-xs md:text-sm rounded-lg bg-white text-slate-500 font-bold border border-slate-200 hover:bg-slate-50 transition-all shrink-0">D4</button>
+                        <button onclick="filterItineraryDay(5)" id="btn-itinerary-5" class="itinerary-day-tab px-2 md:px-3 py-1 text-xs md:text-sm rounded-lg bg-white text-slate-500 font-bold border border-slate-200 hover:bg-slate-50 transition-all shrink-0">D5</button>
+                        <button onclick="filterItineraryDay(6)" id="btn-itinerary-6" class="itinerary-day-tab px-2 md:px-3 py-1 text-xs md:text-sm rounded-lg bg-white text-slate-500 font-bold border border-slate-200 hover:bg-slate-50 transition-all shrink-0">D6</button>
+                    </div>
                 </div>
                 
                 <div class="space-y-4">
                     <!-- Day 1 -->
-                    <div class="bg-white p-5 md:p-6 rounded-[1.5rem] morandi-shadow unified-border-l">
+                    <div id="itinerary-sec-1" class="bg-white p-5 md:p-6 rounded-[1.5rem] morandi-shadow unified-border-l">
                         <div class="mb-6">
                             <span class="date-pill text-sm md:text-base">8/7 (五) 第一天</span>
                         </div>
@@ -345,11 +365,11 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4 text-emerald-600">
+                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4">
                                 <span class="timeline-time text-emerald-600">17:30</span>
                                 <div class="flex-1 flex justify-between items-start">
                                     <div>
-                                        <p class="text-emerald-600">🌱晚餐 Halal Ramen</p>
+                                        <p class="text-emerald-600 font-bold">🌱晚餐 Halal Ramen</p>
                                     </div>
                                     <a href="https://www.google.com/maps/search/?api=1&query=Halal+Ramen+Naniwaya" target="_blank" class="maps-link" title="Google Maps 導航">
                                         <i data-lucide="map-pin" class="w-5 h-5 text-slate-400"></i>
@@ -369,7 +389,7 @@
                     </div>
 
                     <!-- Day 2 -->
-                    <div class="bg-white p-5 md:p-6 rounded-[1.5rem] morandi-shadow unified-border-l">
+                    <div id="itinerary-sec-2" class="bg-white p-5 md:p-6 rounded-[1.5rem] morandi-shadow unified-border-l">
                         <div class="mb-6">
                             <span class="date-pill text-sm md:text-base">8/8 (六) 第二天</span>
                         </div>
@@ -391,11 +411,11 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4 text-emerald-600">
+                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4">
                                 <span class="timeline-time text-emerald-600">12:00</span>
                                 <div class="flex-1 flex justify-between items-start">
                                     <div>
-                                        <p class="text-emerald-600">🌱 午餐 台灣夜市</p>
+                                        <p class="text-emerald-600 font-bold">🌱 午餐 台灣夜市</p>
                                     </div>
                                     <a href="https://www.google.com/maps/search/?api=1&query=TW+NIGHT+MARKET+Osaka" target="_blank" class="maps-link" title="Google Maps 導航">
                                         <i data-lucide="map-pin" class="w-5 h-5 text-slate-400"></i>
@@ -436,11 +456,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4 text-emerald-600">
+                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4">
                                 <span class="timeline-time text-emerald-600">18:00</span>
                                 <div class="flex-1 flex justify-between items-start">
                                     <div>
-                                        <p class="text-emerald-600">🌱 晚餐 OKO takoyaki vegan</p>
+                                        <p class="text-emerald-600 font-bold">🌱 晚餐 OKO takoyaki vegan</p>
                                     </div>
                                     <a href="https://www.google.com/maps/search/?api=1&query=OKO+vegan+takoyaki" target="_blank" class="maps-link" title="Google Maps 導航">
                                         <i data-lucide="map-pin" class="w-5 h-5 text-slate-400"></i>
@@ -451,7 +471,7 @@
                     </div>
 
                     <!-- Day 3 -->
-                    <div class="bg-white p-5 md:p-6 rounded-[1.5rem] morandi-shadow unified-border-l">
+                    <div id="itinerary-sec-3" class="bg-white p-5 md:p-6 rounded-[1.5rem] morandi-shadow unified-border-l">
                         <div class="mb-6">
                             <span class="date-pill text-sm md:text-base">8/9 (日) 第三天</span>
                         </div>
@@ -474,10 +494,10 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4 text-emerald-600">
+                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4">
                                 <span class="timeline-time text-emerald-600">18:00</span>
                                 <div class="flex-1 flex justify-between items-start">
-                                    <span class="text-emerald-600">🌱 晚餐 Paprika Shokudo</span>
+                                    <span class="text-emerald-600 font-bold">🌱 晚餐 Paprika Shokudo</span>
                                     <a href="https://www.google.com/maps/search/?api=1&query=Paprika+Shokudo+Vegan" target="_blank" class="maps-link" title="Google Maps 導航">
                                         <i data-lucide="map-pin" class="w-5 h-5 text-slate-400"></i>
                                     </a>
@@ -487,7 +507,7 @@
                     </div>
 
                     <!-- Day 4 -->
-                    <div class="bg-white p-5 md:p-6 rounded-[1.5rem] morandi-shadow unified-border-l">
+                    <div id="itinerary-sec-4" class="bg-white p-5 md:p-6 rounded-[1.5rem] morandi-shadow unified-border-l">
                         <div class="mb-6">
                             <span class="date-pill text-sm md:text-base">8/10 (一) 第四天</span>
                         </div>
@@ -501,22 +521,22 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4 text-emerald-600">
+                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4">
                                 <span class="timeline-time text-emerald-600">12:00</span>
                                 <div class="flex-1 flex justify-between items-start">
                                     <div>
-                                        <p class="text-emerald-600">🌱 午餐 Mumokuteki</p>
+                                        <p class="text-emerald-600 font-bold">🌱 午餐 Mumokuteki</p>
                                     </div>
                                     <a href="https://www.google.com/maps/search/?api=1&query=mumokuteki+cafe+and+foods+Kyoto" target="_blank" class="maps-link" title="Google Maps 導航">
                                         <i data-lucide="map-pin" class="w-5 h-5 text-slate-400"></i>
                                     </a>
                                 </div>
                             </div>
-                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4 text-emerald-600">
+                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4">
                                 <span class="timeline-time text-emerald-600">18:00</span>
                                 <div class="flex-1 flex justify-between items-start">
                                     <div>
-                                        <p class="text-emerald-600">🌱 晚餐 Pivot BASE Cafe & Bar</p>
+                                        <p class="text-emerald-600 font-bold">🌱 晚餐 Pivot BASE Cafe & Bar</p>
                                     </div>
                                     <a href="https://www.google.com/maps/search/?api=1&query=Pivot+BASE+Cafe+and+Bar+Osaka" target="_blank" class="maps-link" title="Google Maps 導航">
                                         <i data-lucide="map-pin" class="w-5 h-5 text-slate-400"></i>
@@ -527,7 +547,7 @@
                     </div>
 
                     <!-- Day 5 -->
-                    <div class="bg-white p-5 md:p-6 rounded-[1.5rem] morandi-shadow unified-border-l">
+                    <div id="itinerary-sec-5" class="bg-white p-5 md:p-6 rounded-[1.5rem] morandi-shadow unified-border-l">
                         <div class="mb-6">
                             <span class="date-pill text-sm md:text-base">8/11 (二) 第五天</span>
                         </div>
@@ -541,11 +561,11 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4 text-emerald-600">
+                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4">
                                 <span class="timeline-time text-emerald-600">11:30</span>
                                 <div class="flex-1 flex justify-between items-start">
                                     <div>
-                                        <p class="text-emerald-600">🌱 午餐 素食串燒 あじゅ</p>
+                                        <p class="text-emerald-600 font-bold">🌱 午餐 素食串燒 あじゅ</p>
                                     </div>
                                     <a href="https://www.google.com/maps/search/?api=1&query=串かつ+あじゅ" target="_blank" class="maps-link" title="Google Maps 導航">
                                         <i data-lucide="map-pin" class="w-5 h-5 text-slate-400"></i>
@@ -570,17 +590,17 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4 text-emerald-600">
+                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4">
                                 <span class="timeline-time text-emerald-600">19:00</span>
                                 <div class="flex-1 flex justify-between items-start">
-                                    <span class="text-emerald-600">🌱 晚餐 DIY</span>
+                                    <span class="text-emerald-600 font-bold">🌱 晚餐 DIY</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Day 6 -->
-                    <div class="bg-white p-5 md:p-6 rounded-[1.5rem] morandi-shadow unified-border-l">
+                    <div id="itinerary-sec-6" class="bg-white p-5 md:p-6 rounded-[1.5rem] morandi-shadow unified-border-l">
                         <div class="mb-6">
                             <span class="date-pill text-sm md:text-base">8/12 (三) 第六天</span>
                         </div>
@@ -591,7 +611,7 @@
                                     <span class="text-slate-600">民宿退房</span>
                                 </div>
                             </div>
-                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4 text-rose-600">
+                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4">
                                 <span class="timeline-time text-rose-500">13:45</span>
                                 <div class="flex-1 flex justify-between items-start">
                                     <span class="text-rose-600">關西起飛 (亞洲航空 AK171)</span>
@@ -600,7 +620,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4 text-rose-600">
+                            <div class="flex gap-3 md:gap-4 border-t border-[#f2f2f0] pt-4">
                                 <span class="timeline-time text-rose-500">16:00</span>
                                 <div class="flex-1 flex justify-between items-start">
                                     <span class="text-rose-600">降落小港</span>
@@ -858,7 +878,6 @@
                     <div class="flex justify-between items-start mb-3">
                         <div>
                             <h4 class="text-slate-800 text-lg tracking-wide">住宿安排</h4>
-                            <p class="text-xs text-slate-400 mt-0.5">地理位置絕佳，方便每日行程無縫轉乘</p>
                         </div>
                         <a href="https://maps.app.goo.gl/hyWnoeDbYKi2CSFs5" target="_blank" class="maps-link" title="在 Google 地圖中開啟">
                             <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-morandi-slate">
@@ -868,7 +887,7 @@
                     </div>
                     <div class="text-slate-600 space-y-2 text-sm md:text-base">
                         <p class="text-base text-slate-800">🏨 JS曉宅・弦月</p>
-                        <p>📍 位址簡介： 花園町地鐵站步行即可抵達。</p>
+                        <p>📍 位址： 花園町地鐵站步行即可抵達。</p>
                     </div>
                 </div>
 
@@ -879,19 +898,19 @@
                         <div>
                             <h4 class="text-slate-700 text-base mb-3 tracking-wide pb-1.5 border-b border-slate-100 uppercase">💰 預算估計</h4>
                             <!-- 預算輸入項目容器 -->
-                            <div id="budget-inputs-container" class="space-y-3 max-h-[250px] overflow-y-auto pr-1"></div>
+                            <div id="budget-inputs-container" class="space-y-3 max-h-[250px] overflow-y-auto pr-1 text-base"></div>
                         </div>
 
                         <!-- 新增自訂預算項目欄位 -->
-                        <div class="mt-4 pt-3 border-t border-slate-100">
-                            <h5 class="text-sm text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1">
+                        <div class="mt-4 pt-3 border-t border-slate-100 text-base">
+                            <h5 class="text-base text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1 font-bold">
                                 <i data-lucide="plus" class="w-4 h-4"></i> 新增預算項目
                             </h5>
                             <div class="flex flex-col gap-2">
-                                <input type="text" id="new-budget-label" placeholder="項目名稱 (如：環球影城)" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-base focus:outline-none focus:ring-2 focus:ring-morandi-terracotta/20 text-slate-800">
+                                <input type="text" id="new-budget-label" placeholder="項目名稱" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-base focus:outline-none focus:ring-2 focus:ring-morandi-terracotta/20 text-slate-800">
                                 <input type="number" id="new-budget-value" placeholder="金額 (TWD)" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-base focus:outline-none focus:ring-2 focus:ring-morandi-terracotta/20 text-slate-800">
                             </div>
-                            <button onclick="addBudgetItem()" class="w-full mt-2 py-2 bg-morandi-terracotta hover:bg-morandi-terracottaLight text-white rounded-lg text-base transition-all">
+                            <button onclick="addBudgetItem()" class="w-full mt-2 py-2 bg-morandi-terracotta hover:bg-morandi-terracottaLight text-white rounded-lg text-base transition-all font-bold">
                                 加入預算項目
                             </button>
                         </div>
@@ -910,7 +929,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="budget-legend" class="text-left space-y-2 mt-3 max-h-[150px] overflow-y-auto pr-1"></div>
+                        <div id="budget-legend" class="text-left space-y-2 mt-3 max-h-[150px] overflow-y-auto pr-1 text-base"></div>
                     </div>
                 </div>
 
@@ -919,24 +938,24 @@
                     <h4 class="text-slate-800 text-base mb-3 tracking-wide">附錄：自付門票明細 (參考)</h4>
                     <ul class="space-y-2 text-sm md:text-base text-slate-600">
                         <li class="flex justify-between border-b border-slate-100 pb-1.5">
-                            <span>天王寺動物園門票</span>
-                            <span class="text-slate-800">500日圓 / 人 (約台幣105元)</span>
+                            <span>動物園門票</span>
+                            <span class="text-slate-800">500日 / 人 (台105元)</span>
                         </li>
                         <li class="flex justify-between border-b border-slate-100 pb-1.5">
-                            <span>四天王寺中心伽藍（含五重塔）參拜</span>
-                            <span class="text-slate-800">300日圓 / 人 (約台幣63元)</span>
+                            <span>四天王寺含五重塔參拜</span>
+                            <span class="text-slate-800">300日 / 人 (台63元)</span>
                         </li>
                         <li class="flex justify-between border-b border-slate-100 pb-1.5">
-                            <span>阿倍野展望台入場 + 12G高速網卡 (KKDAY 聯票)</span>
-                            <span class="text-slate-800">約 397 元台幣 / 人</span>
+                            <span>阿倍野展望台+12G高速網卡</span>
+                            <span class="text-slate-800">397元台 / 人</span>
                         </li>
                         <li class="flex justify-between border-b border-slate-100 pb-1.5">
                             <span>大阪海遊館門票 (KKDAY 搶先預購)</span>
-                            <span class="text-slate-800">成人 552 元 / 孩童 276 元台幣</span>
+                            <span class="text-slate-800">成人552元台 / 孩童276元台</span>
                         </li>
                         <li class="flex justify-between">
-                            <span>大阪兒童樂園入場券</span>
-                            <span class="text-slate-800">約 291 元台幣 / 人</span>
+                            <span>兒童樂園入場券</span>
+                            <span class="text-slate-800">290元台 / 人</span>
                         </li>
                     </ul>
                 </div>
@@ -957,7 +976,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- 分類：證件重要物品 -->
                     <div class="bg-white p-5 rounded-3xl morandi-shadow">
-                        <h4 class="text-morandi-terracotta text-sm md:text-base mb-3 flex items-center gap-2">
+                        <h4 class="text-morandi-terracotta text-sm md:text-base mb-3 flex items-center gap-2 font-bold">
                             <i data-lucide="file-text" class="w-4 h-4"></i> 核心證件與通訊
                         </h4>
                         <div class="space-y-2.5" id="chk-group-docs"></div>
@@ -965,7 +984,7 @@
 
                     <!-- 分類：電器與充電 -->
                     <div class="bg-white p-5 rounded-3xl morandi-shadow">
-                        <h4 class="text-morandi-slate text-sm md:text-base mb-3 flex items-center gap-2">
+                        <h4 class="text-morandi-slate text-sm md:text-base mb-3 flex items-center gap-2 font-bold">
                             <i data-lucide="plug-zap" class="w-4 h-4"></i> 電子硬體與充電器
                         </h4>
                         <div class="space-y-2.5" id="chk-group-tech"></div>
@@ -973,7 +992,7 @@
 
                     <!-- 分類：衣物與隨身 -->
                     <div class="bg-white p-5 rounded-3xl morandi-shadow">
-                        <h4 class="text-morandi-sage text-sm md:text-base mb-3 flex items-center gap-2">
+                        <h4 class="text-morandi-sage text-sm md:text-base mb-3 flex items-center gap-2 font-bold">
                             <i data-lucide="shirt" class="w-4 h-4"></i> 盛夏衣物與防暑
                         </h4>
                         <div class="space-y-2.5" id="chk-group-clothes"></div>
@@ -981,12 +1000,12 @@
 
                     <!-- 分類：自訂物品 -->
                     <div class="bg-white p-5 rounded-3xl morandi-shadow">
-                        <h4 class="text-morandi-gold text-sm md:text-base mb-3 flex items-center gap-2">
+                        <h4 class="text-morandi-gold text-sm md:text-base mb-3 flex items-center gap-2 font-bold">
                             <i data-lucide="plus-circle" class="w-4 h-4"></i> 自訂打包項目
                         </h4>
-                        <div class="flex gap-2 mb-3">
-                            <input type="text" id="custom-item-input" placeholder="例如：降噪耳塞..." class="flex-1 px-3 py-1.5 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-morandi-gold/30">
-                            <button onclick="addCustomChecklistItem()" class="px-4 py-1.5 bg-morandi-gold hover:bg-morandi-goldLight text-white rounded-lg text-xs transition-all shrink-0">新增</button>
+                        <div class="flex gap-2 mb-3 text-base">
+                            <input type="text" id="custom-item-input" placeholder="例如：降噪耳塞..." class="flex-1 px-3 py-1.5 rounded-lg border border-slate-200 text-base focus:outline-none focus:ring-2 focus:ring-morandi-gold/30">
+                            <button onclick="addCustomChecklistItem()" class="px-4 py-1.5 bg-morandi-gold hover:bg-morandi-goldLight text-white rounded-lg text-base transition-all shrink-0 font-bold">新增</button>
                         </div>
                         <div class="space-y-2.5" id="chk-group-custom"></div>
                     </div>
@@ -1002,37 +1021,37 @@
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
                     <!-- 左側：備忘輸入 -->
                     <div class="md:col-span-8 bg-white p-5 rounded-3xl morandi-shadow space-y-3">
-                        <textarea id="travel-notepad" rows="10" oninput="saveNotesToStorage()" class="w-full p-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-morandi-sage/20 text-slate-700 text-xs md:text-sm leading-relaxed" placeholder="在這裡寫下你的旅行筆記 (網頁會隨時自動存檔哦！)"></textarea>
-                        <div class="flex justify-between items-center text-[16px] text-slate-400">
+                        <textarea id="travel-notepad" rows="10" oninput="saveNotesToStorage()" class="w-full p-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-morandi-sage/20 text-slate-700 text-lg md:text-xl leading-relaxed" placeholder="在這裡寫下你的旅行筆記 (網頁會隨時自動存檔哦！)"></textarea>
+                        <div class="flex justify-between items-center text-base text-slate-400">
                             <span id="note-save-status">💾 所有變更已即時自動存檔</span>
                             <button onclick="triggerClearNotes()" class="text-rose-600 hover:underline">清空筆記</button>
                         </div>
                     </div>
 
-                    <!-- 右側：日圓即時換算 -->
+                    <!-- 右側：日圓即時換算 (超大字操作介面) -->
                     <div class="md:col-span-4 bg-white p-5 rounded-3xl morandi-shadow flex flex-col justify-between">
                         <div>
-                            <h4 class="text-slate-700 text-base md:text-lg mb-3 tracking-wide border-b border-slate-100 pb-1.5">💵 伴手禮換算</h4>
-                            <p class="text-xs text-slate-400 mb-4">日圓匯率 (0.20 TWD = 1 JPY) 點擊可調整</p>
+                            <h4 class="text-slate-700 text-lg mb-3 tracking-wide border-b border-slate-100 pb-1.5 font-bold">💵 伴手禮換算</h4>
+                            <p class="text-sm text-slate-400 mb-4">日圓匯率 (0.20 TWD = 1 JPY) 點擊可調整</p>
                             
                             <div class="space-y-4">
                                 <div>
-                                    <label class="block text-xs text-slate-500 mb-1.5">設定當前匯率</label>
-                                    <input type="number" id="input-rate" value="0.20" step="0.001" oninput="convertCurrency('rate')" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-morandi-sage/20 text-slate-800">
+                                    <label class="block text-sm text-slate-500 mb-1.5 font-bold">設定當前匯率</label>
+                                    <input type="number" id="input-rate" value="0.20" step="0.001" oninput="convertCurrency('rate')" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 font-mono text-base focus:outline-none focus:ring-2 focus:ring-morandi-sage/20 text-slate-800">
                                 </div>
                                 <div class="space-y-3.5">
                                     <div>
-                                        <label class="block text-xs text-slate-500 mb-1.5">日圓 (JPY JPY ￥)</label>
-                                        <input type="number" id="input-jpy" value="1000" oninput="convertCurrency('jpy')" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-mono text-lg md:text-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-morandi-sage/20">
+                                        <label class="block text-sm text-slate-500 mb-1.5 font-bold">日圓 (JPY ￥)</label>
+                                        <input type="number" id="input-jpy" value="1000" oninput="convertCurrency('jpy')" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-mono text-xl md:text-2xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-morandi-sage/20 font-bold">
                                     </div>
                                     <div class="flex justify-center -my-2.5">
-                                        <div class="bg-slate-50 p-1.5 rounded-full text-slate-400 border border-slate-100">
-                                            <i data-lucide="arrow-up-down" class="w-4 h-4"></i>
+                                        <div class="bg-slate-50 p-2 rounded-full text-slate-400 border border-slate-100 shadow-sm">
+                                            <i data-lucide="arrow-up-down" class="w-5 h-5"></i>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-xs text-slate-500 mb-1.5">台幣 (TWD $)</label>
-                                        <input type="number" id="input-twd" value="200" oninput="convertCurrency('twd')" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-mono text-lg md:text-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-morandi-sage/20">
+                                        <label class="block text-sm text-slate-500 mb-1.5 font-bold">台幣 (TWD $)</label>
+                                        <input type="number" id="input-twd" value="200" oninput="convertCurrency('twd')" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-mono text-xl md:text-2xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-morandi-sage/20 font-bold">
                                     </div>
                                 </div>
                             </div>
@@ -1046,26 +1065,26 @@
     </div>
 
     <!-- 行動裝置底部快捷選單 -->
-    <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-100 py-2 px-4 flex justify-around items-center z-40 morandi-shadow md:hidden">
-        <button onclick="goHome()" class="flex flex-col items-center gap-0.5 text-slate-400 focus:outline-none">
-            <i data-lucide="layout-grid" class="w-5 h-5"></i>
-            <span class="text-[9px]">首頁總覽</span>
+    <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-100 py-2.5 px-4 flex justify-around items-center z-40 morandi-shadow md:hidden">
+        <button id="btn-nav-home" onclick="goHome()" class="flex flex-col items-center gap-1 text-morandi-terracotta transition-all duration-300 active:scale-95 focus:outline-none">
+            <i data-lucide="layout-grid" class="w-5.5 h-5.5"></i>
+            <span class="text-[10px]">首頁總覽</span>
         </button>
-        <button onclick="navigateTo('itinerary')" class="flex flex-col items-center gap-0.5 text-slate-400 focus:outline-none">
-            <i data-lucide="calendar" class="w-5 h-5"></i>
-            <span class="text-[9px]">行程安排</span>
+        <button id="btn-nav-itinerary" onclick="navigateTo('itinerary')" class="flex flex-col items-center gap-1 text-slate-400 transition-all duration-300 active:scale-95 focus:outline-none">
+            <i data-lucide="calendar" class="w-5.5 h-5.5"></i>
+            <span class="text-[10px]">行程安排</span>
         </button>
-        <button onclick="navigateTo('dining')" class="flex flex-col items-center gap-0.5 text-slate-400 focus:outline-none">
-            <i data-lucide="utensils" class="w-5 h-5"></i>
-            <span class="text-[9px]">特選餐廳</span>
+        <button id="btn-nav-dining" onclick="navigateTo('dining')" class="flex flex-col items-center gap-1 text-slate-400 transition-all duration-300 active:scale-95 focus:outline-none">
+            <i data-lucide="utensils" class="w-5.5 h-5.5"></i>
+            <span class="text-[10px]">特選餐廳</span>
         </button>
-        <button onclick="navigateTo('checklist')" class="flex flex-col items-center gap-0.5 text-slate-400 focus:outline-none">
-            <i data-lucide="check-square" class="w-5 h-5"></i>
-            <span class="text-[9px]">行李清單</span>
+        <button id="btn-nav-checklist" onclick="navigateTo('checklist')" class="flex flex-col items-center gap-1 text-slate-400 transition-all duration-300 active:scale-95 focus:outline-none">
+            <i data-lucide="check-square" class="w-5.5 h-5.5"></i>
+            <span class="text-[10px]">行李清單</span>
         </button>
-        <button onclick="navigateTo('notes')" class="flex flex-col items-center gap-0.5 text-slate-400 focus:outline-none">
-            <i data-lucide="notebook" class="w-5 h-5"></i>
-            <span class="text-[9px]">隨身手記</span>
+        <button id="btn-nav-notes" onclick="navigateTo('notes')" class="flex flex-col items-center gap-1 text-slate-400 transition-all duration-300 active:scale-95 focus:outline-none">
+            <i data-lucide="notebook" class="w-5.5 h-5.5"></i>
+            <span class="text-[10px]">隨身手記</span>
         </button>
     </nav>
 
@@ -1097,8 +1116,12 @@
             const now = new Date().getTime();
             const difference = departureTime - now;
 
+            // 旅行時間到，將整個倒數計時畫面完全隱藏
             if (difference < 0) {
-                document.getElementById('countdown-timer').innerHTML = "<span class='text-xs text-morandi-terracotta font-bold py-1 px-3 bg-white/50 rounded-lg'>🌸 飛機已起飛，旅途愉快！</span>";
+                const widget = document.getElementById('top-countdown-widget');
+                if (widget) {
+                    widget.style.display = 'none';
+                }
                 return;
             }
 
@@ -1116,6 +1139,50 @@
 
         setInterval(updateCountdown, 1000);
         updateCountdown();
+
+        // 行程安排：切換特定天數的行程視圖
+        function filterItineraryDay(day) {
+            // 切換按鈕的 Active 狀態
+            document.querySelectorAll('.itinerary-day-tab').forEach(btn => {
+                btn.classList.remove('bg-morandi-terracotta', 'text-white', 'border-transparent');
+                btn.classList.add('bg-white', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50');
+            });
+
+            const activeBtn = document.getElementById(`btn-itinerary-${day}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-morandi-terracotta', 'text-white', 'border-transparent');
+                activeBtn.classList.remove('bg-white', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50');
+            }
+
+            // 顯示/隱藏各天數的行程卡片
+            for (let i = 1; i <= 6; i++) {
+                const sec = document.getElementById(`itinerary-sec-${i}`);
+                if (sec) {
+                    if (day === 'all' || day === i) {
+                        sec.style.display = 'block';
+                    } else {
+                        sec.style.display = 'none';
+                    }
+                }
+            }
+        }
+
+        // 行動裝置底部快捷按鈕視覺更新（選取時呈現深莫蘭迪紅）
+        function updateBottomNav(activeId) {
+            const navIds = ['home', 'itinerary', 'dining', 'checklist', 'notes'];
+            navIds.forEach(id => {
+                const btn = document.getElementById(`btn-nav-${id}`);
+                if (btn) {
+                    if (id === activeId) {
+                        btn.classList.remove('text-slate-400');
+                        btn.classList.add('text-morandi-terracotta');
+                    } else {
+                        btn.classList.remove('text-morandi-terracotta');
+                        btn.classList.add('text-slate-400');
+                    }
+                }
+            });
+        }
 
         // 頁面切換控制 (SPA 結構)
         function navigateTo(pageId) {
@@ -1144,6 +1211,7 @@
                 loadNotesAndChecklist();
             }
             
+            updateBottomNav(pageId);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1152,6 +1220,8 @@
             document.getElementById('back-btn').classList.add('hidden');
             document.getElementById('home-page').classList.remove('hidden');
             document.getElementById('home-page').classList.add('active-page');
+            
+            updateBottomNav('home');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1179,7 +1249,7 @@
         // ================= D3.js 與 LocalStorage 動態預算管理 =================
         const defaultBudget = [
             { id: "b-1", label: "亞航機票", value: 10400, color: "#9E5E52" },
-            { id: "b-2", label: "曉宅五晚住宿", value: 5000, color: "#526E7A" },
+            { id: "b-2", label: "弦月住宿", value: 15000, color: "#526E7A" },
             { id: "b-3", label: "網路與交通", value: 450, color: "#A38B58" },
             { id: "b-4", label: "吃喝買伴手禮", value: 6000, color: "#5F7362" }
         ];
