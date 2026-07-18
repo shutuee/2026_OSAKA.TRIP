@@ -193,39 +193,21 @@
 
     <div class="max-w-4xl mx-auto px-4 md:px-6 py-6 md:py-10">
         
-        <!-- 頂部倒計時與快速看板 -->
-        <div id="top-countdown-widget" class="mb-6 bg-[#F4EAD4] rounded-[2rem] p-5 sm:p-6 morandi-shadow flex flex-col justify-between items-center gap-4 text-center">
-            <div class="flex flex-row items-center justify-center gap-4 w-full">
-                <div class="w-16 h-16 rounded-2xl bg-white/40 flex items-center justify-center text-[#5a5a57] shrink-0">
-                    <i data-lucide="plane-takeoff" class="w-10 h-10"></i>
-                </div>
-                <div class="text-left text-[#5a5a57]">
-                    <h3 class="text-xl font-bold tracking-widest uppercase">旅行倒數中</h3>
-                    <p class="text-[14px] opacity-70 tracking-wider mt-1">2026/08/07 高雄起飛</p>
-                </div>
+        <!-- 頂部倒計時：極簡單列奶茶色看板 -->
+        <div id="top-countdown-widget" class="mb-6 bg-[#F4EAD4] rounded-[2rem] p-4 sm:p-5 morandi-shadow flex flex-row items-center justify-center gap-4 sm:gap-6 w-full text-left">
+            <!-- 左側飛機圖示 -->
+            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/40 flex items-center justify-center text-[#5a5a57] shrink-0">
+                <i data-lucide="plane-takeoff" class="w-7 h-7 sm:w-8 sm:h-8"></i>
             </div>
-            
-            <!-- 倒數計時容器 -->
-            <div id="countdown-timer" class="flex items-center justify-center gap-2 font-mono text-[#5a5a57] w-full">
-                <div class="flex flex-col items-center min-w-[55px] md:min-w-[70px] bg-white/40 p-2.5 rounded-2xl">
-                    <span id="cd-days" class="text-2xl md:text-3xl font-bold">--</span>
-                    <span class="text-[9px] opacity-75 mt-1 tracking-wider font-sans">DAYS</span>
-                </div>
-                <div class="opacity-40 text-xl font-thin -mt-2">:</div>
-                <div class="flex flex-col items-center min-w-[55px] md:min-w-[70px] bg-white/40 p-2.5 rounded-2xl">
-                    <span id="cd-hours" class="text-2xl md:text-3xl font-bold">--</span>
-                    <span class="text-[9px] opacity-75 mt-1 tracking-wider font-sans">HRS</span>
-                </div>
-                <div class="opacity-40 text-xl font-thin -mt-2">:</div>
-                <div class="flex flex-col items-center min-w-[55px] md:min-w-[70px] bg-white/40 p-2.5 rounded-2xl">
-                    <span id="cd-mins" class="text-2xl md:text-3xl font-bold">--</span>
-                    <span class="text-[9px] opacity-75 mt-1 tracking-wider font-sans">MINS</span>
-                </div>
-                <div class="opacity-40 text-xl font-thin -mt-2">:</div>
-                <div class="flex flex-col items-center min-w-[55px] md:min-w-[70px] bg-white/40 p-2.5 rounded-2xl">
-                    <span id="cd-secs" class="text-2xl md:text-3xl font-bold opacity-80">--</span>
-                    <span class="text-[9px] opacity-75 mt-1 tracking-wider font-sans">SECS</span>
-                </div>
+            <!-- 中間文字區域 -->
+            <div class="text-[#5a5a57] flex-1">
+                <h3 class="text-base sm:text-lg font-bold tracking-wider">旅行倒數中</h3>
+                <p class="text-[12px] sm:text-xs opacity-70 tracking-wide mt-0.5">2026/08/07 高雄起飛</p>
+            </div>
+            <!-- 右側僅保留 DAYS 卡片 -->
+            <div class="flex flex-col items-center bg-white/40 px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-2xl shrink-0 min-w-[65px] sm:min-w-[75px]">
+                <span id="cd-days" class="text-xl sm:text-2xl font-bold font-mono">--</span>
+                <span class="text-[8px] sm:text-[9px] opacity-75 tracking-wider font-bold">DAYS</span>
             </div>
         </div>
 
@@ -278,14 +260,14 @@
                     </div>
                     <span class="text-white font-bold tracking-[0.08em] text-base md:text-xl text-center px-1">伴手禮推薦</span>
                 </div>
-                <!-- 預算及住宿 -->
+                <!-- 住宿及花費 -->
                 <div onclick="navigateTo('budget-hotel')" class="icon-card card-budget-hotel rounded-[2rem] flex flex-col items-center justify-center p-4">
                     <div class="w-16 h-16 rounded-2xl bg-white/15 flex items-center justify-center mb-3 backdrop-blur-sm">
                         <i data-lucide="wallet" class="w-9 h-9 text-white"></i>
                     </div>
-                    <span class="text-white font-bold tracking-[0.08em] text-base md:text-xl text-center px-1">預算及住宿</span>
+                    <span class="text-white font-bold tracking-[0.08em] text-base md:text-xl text-center px-1">住宿及花費</span>
                 </div>
-                <!-- 行李清單 -->
+                <!-- 行記清單 -->
                 <div onclick="navigateTo('checklist')" class="icon-card card-checklist rounded-[2rem] flex flex-col items-center justify-center p-4">
                     <div class="w-16 h-16 rounded-2xl bg-white/15 flex items-center justify-center mb-3 backdrop-blur-sm">
                         <i data-lucide="check-square" class="w-9 h-9 text-white"></i>
@@ -302,7 +284,6 @@
             </div>
         </div>
 
-        <!-- 內容容器 -->
         <div id="content-container">
             <!-- 返回首頁按鈕 -->
             <button id="back-btn" onclick="goHome()" class="hidden mb-6 flex items-center text-[#5a5a57] bg-white px-4 py-2 rounded-full shadow-sm border border-[#e2e2e0] hover:bg-[#f8f8f6] hover:shadow-md transition-all tracking-widest text-xs active:scale-95 w-fit">
@@ -867,10 +848,10 @@
                 </div>
             </div>
 
-            <!-- ================= 六、預算及住宿 ================= -->
+            <!-- ================= 六、住宿及花費 ================= -->
             <div id="budget-hotel-page" class="page-content space-y-6">
                 <div class="border-b border-[#e2e2e0] pb-3">
-                    <h2 class="text-xl md:text-2xl font-black tracking-[0.1em] text-[#5a5a57]">預算及住宿</h2>
+                    <h2 class="text-xl md:text-2xl font-black tracking-[0.1em] text-[#5a5a57]">住宿及花費</h2>
                 </div>
                 
                 <!-- 住宿資訊區塊 -->
@@ -1021,7 +1002,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
                     <!-- 左側：備忘輸入 -->
                     <div class="md:col-span-8 bg-white p-5 rounded-3xl morandi-shadow space-y-3">
-                        <textarea id="travel-notepad" rows="10" oninput="saveNotesToStorage()" class="w-full p-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-morandi-sage/20 text-slate-700 text-lg md:text-xl leading-relaxed" placeholder="寫下你的旅行筆記 (網頁會隨時自動存檔)"></textarea>
+                        <textarea id="travel-notepad" rows="10" oninput="saveNotesToStorage()" class="w-full p-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-morandi-sage/20 text-slate-700 text-lg md:text-xl leading-relaxed font-bold" placeholder="在這裡寫下你的旅行筆記 (網頁會隨時自動存檔哦！)"></textarea>
                         <div class="flex justify-between items-center text-base text-slate-400">
                             <span id="note-save-status">💾 所有變更已即時自動存檔</span>
                             <button onclick="triggerClearNotes()" class="text-rose-600 hover:underline">清空筆記</button>
@@ -1031,8 +1012,8 @@
                     <!-- 右側：日圓即時換算 (超大字操作介面) -->
                     <div class="md:col-span-4 bg-white p-5 rounded-3xl morandi-shadow flex flex-col justify-between">
                         <div>
-                            <h4 class="text-slate-700 text-lg mb-3 tracking-wide border-b border-slate-100 pb-1.5 font-bold">💵 伴手禮換算</h4>
-                            <p class="text-sm text-slate-400 mb-4">日圓匯率 (0.2 TWD = 1 JPY) 點擊可調整</p>
+                            <h4 class="text-slate-700 text-lg mb-3 tracking-wide border-b border-slate-100 pb-1.5 font-bold">💵 換算</h4>
+                            <p class="text-sm text-slate-400 mb-4">日圓匯率 (0.20 TWD = 1 JPY) 點擊可調整</p>
                             
                             <div class="space-y-4">
                                 <div>
@@ -1064,7 +1045,7 @@
 
     </div>
 
-    <!-- 行動裝置底部快捷選單 -->
+    <!-- 行動裝置底部快捷選單 (第四個按鈕更新為住宿及花費) -->
     <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-100 py-2.5 px-4 flex justify-around items-center z-40 morandi-shadow md:hidden">
         <button id="btn-nav-home" onclick="goHome()" class="flex flex-col items-center gap-1 text-morandi-terracotta transition-all duration-300 active:scale-95 focus:outline-none">
             <i data-lucide="layout-grid" class="w-5.5 h-5.5"></i>
@@ -1078,9 +1059,9 @@
             <i data-lucide="utensils" class="w-5.5 h-5.5"></i>
             <span class="text-[10px]">特選餐廳</span>
         </button>
-        <button id="btn-nav-checklist" onclick="navigateTo('checklist')" class="flex flex-col items-center gap-1 text-slate-400 transition-all duration-300 active:scale-95 focus:outline-none">
-            <i data-lucide="check-square" class="w-5.5 h-5.5"></i>
-            <span class="text-[10px]">行李清單</span>
+        <button id="btn-nav-budget-hotel" onclick="navigateTo('budget-hotel')" class="flex flex-col items-center gap-1 text-slate-400 transition-all duration-300 active:scale-95 focus:outline-none">
+            <i data-lucide="wallet" class="w-5.5 h-5.5"></i>
+            <span class="text-[10px]">住宿花費</span>
         </button>
         <button id="btn-nav-notes" onclick="navigateTo('notes')" class="flex flex-col items-center gap-1 text-slate-400 transition-all duration-300 active:scale-95 focus:outline-none">
             <i data-lucide="notebook" class="w-5.5 h-5.5"></i>
@@ -1126,15 +1107,9 @@
             }
 
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const mins = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const secs = Math.floor((difference % (1000 * 60)) / 1000);
 
-            // 補齊雙位數
+            // 僅更新 DAYS 數值，其餘已刪除
             document.getElementById('cd-days').textContent = days < 10 ? '0' + days : days;
-            document.getElementById('cd-hours').textContent = hours < 10 ? '0' + hours : hours;
-            document.getElementById('cd-mins').textContent = mins < 10 ? '0' + mins : mins;
-            document.getElementById('cd-secs').textContent = secs < 10 ? '0' + secs : secs;
         }
 
         setInterval(updateCountdown, 1000);
@@ -1169,7 +1144,7 @@
 
         // 行動裝置底部快捷按鈕視覺更新（選取時呈現深莫蘭迪紅）
         function updateBottomNav(activeId) {
-            const navIds = ['home', 'itinerary', 'dining', 'checklist', 'notes'];
+            const navIds = ['home', 'itinerary', 'dining', 'budget-hotel', 'notes'];
             navIds.forEach(id => {
                 const btn = document.getElementById(`btn-nav-${id}`);
                 if (btn) {
@@ -1195,7 +1170,7 @@
             const targetPage = document.getElementById(pageId + '-page');
             if (targetPage) targetPage.classList.add('active-page');
             
-            // 如果進入預算與住宿頁面，非同步加載 D3
+            // 如果進入住宿與花費頁面，非同步加載 D3
             if (pageId === 'budget-hotel') {
                 setTimeout(() => {
                     renderBudgetInputs();
@@ -1401,12 +1376,10 @@
                 { id: "doc-2", text: "12G 高速網路 eSIM / 實體網卡確認", checked: false },
                 { id: "doc-3", text: "日圓現金、跨國提款信用卡備用", checked: false },
                 { id: "doc-4", text: "機票 (AK170 / AK171) 電子憑證", checked: false },
-                { id: "doc-5", text: "關西機場 Nankai 特急 / 地鐵票券兌換代碼", checked: false }
             ],
             tech: [
                 { id: "tech-1", text: "手機、平板及原裝充電線", checked: false },
                 { id: "tech-2", text: "行動電源 (需隨身攜帶，不可託運)", checked: false },
-                { id: "tech-3", text: "多孔旅行萬國轉接插頭 (備用)", checked: false },
                 { id: "tech-4", text: "相機、記憶卡與讀卡機", checked: false }
             ],
             clothes: [
